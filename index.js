@@ -41,6 +41,7 @@ app.get("/characters", async (req, res) => {
   }
 });
 
+
 // ➤ Character details
 app.get("/character/:id", async (req, res) => {
   try {
@@ -142,6 +143,20 @@ app.post("/favorites/comics", async (req, res) => {
     });
   } catch (error) {
     res.status(500).json({ message: "Erreur /favorites/comics", error: error.message });
+  }
+});
+// ➤ Comic detail (par ID unique)
+app.get("/comic/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const response = await axios.get(`${API_URL}/comic/${id}`, {
+      params: { apiKey: API_KEY },
+    });
+
+    res.json(response.data);
+  } catch (error) {
+    res.status(500).json({ message: "Erreur /comic/:id", error: error.message });
   }
 });
 
