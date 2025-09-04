@@ -76,20 +76,6 @@ app.get("/comics/:characterId", async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 });
-app.get("/comic/:id", async (req, res) => {
-  try {
-    const { id } = req.params;
-
-    const response = await axios.get(
-      `https://lereacteur-marvel-api.herokuapp.com/comic/${id}?apiKey=${process.env.MARVEL_API_KEY}`
-    );
-
-    return res.status(200).json(response.data);
-  } catch (error) {
-    return res.status(500).json({ message: error.message });
-  }
-});
-
 
 app.listen(process.env.PORT, () => {
   console.log("Server started 🦸‍♂️🦸🏽‍♀️");
