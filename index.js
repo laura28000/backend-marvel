@@ -5,6 +5,7 @@ const axios = require("axios");
 
 const app = express();
 app.use(cors());
+app.use(express.json()); // ✅ Ajout pour lire le body JSON
 
 // ✅ Route de bienvenue
 app.get("/", (req, res) => {
@@ -107,6 +108,52 @@ app.get("/comic/:id", async (req, res) => {
     return res
       .status(500)
       .json({ message: "Erreur lors de la récupération du comic", error: error.message });
+  }
+});
+
+// ✅ Favoris - POST avec une liste d'IDs de personnages
+app.post("/favorites/characters", async (req, res) => {
+  try {
+    const ids = req.body.ids;
+    if (!Array.isArray(ids) || ids.length === 0) {
+      return res.status(400).json({ message: "No character IDs provided" });
+    }
+
+    const responses = await Promise.all(
+      ids.map((id) =>
+        axios.get(
+          `https://lereacteur-marvel-api.herokuapp.com/character/${id}?apiKey=${process.env.MARVEL_API_KEY}`
+        )
+      )
+    );
+
+    const results = responses.map((r) => r.data);
+    return res.status(200).json({ results });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+});
+
+// ✅ Favoris - POST avec une liste d'IDs de comics
+app.post("/favorites/comics", async (req, res) => {
+  try {
+    const ids = req.body.ids;
+    if (!Array.isArray(ids) || ids.length === 0) {
+      return res.status(400).json({ message: "No comic IDs provided" });
+    }
+
+    const responses = await Promise.all(
+      ids.map((id) =>
+        axios.get(
+          `https://lereacteur-marvel-api.herokuapp.com/comic/${id}?apiKey=${process.env.MARVEL_API_KEY}`
+        )
+      )
+    );
+
+    const results = responses.map((r) => r.data);
+    return res.status(200).json({ results });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
   }
 });
 
