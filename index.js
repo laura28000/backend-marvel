@@ -5,9 +5,8 @@ const axios = require("axios");
 
 const app = express();
 app.use(cors());
-app.use(express.json()); // ✅ Ajout pour lire le body JSON
+app.use(express.json());
 
-// ✅ Route de bienvenue
 app.get("/", (req, res) => {
   try {
     return res.status(200).json("Bienvenue sur le serveur marvel 🦸‍♂️🦸🏽‍♀️");
@@ -16,7 +15,6 @@ app.get("/", (req, res) => {
   }
 });
 
-// ✅ Liste des personnages
 app.get("/characters", async (req, res) => {
   try {
     const limit = 100;
@@ -40,7 +38,6 @@ app.get("/characters", async (req, res) => {
   }
 });
 
-// ✅ Détail d’un personnage
 app.get("/character/:id", async (req, res) => {
   try {
     const characterId = req.params.id;
@@ -55,7 +52,6 @@ app.get("/character/:id", async (req, res) => {
   }
 });
 
-// ✅ Comics (avec recherche + pagination)
 app.get("/comics", async (req, res) => {
   try {
     const limit = 100;
@@ -79,7 +75,6 @@ app.get("/comics", async (req, res) => {
   }
 });
 
-// ✅ Liste des comics associés à un personnage
 app.get("/comics/:characterId", async (req, res) => {
   try {
     const { characterId } = req.params;
@@ -94,7 +89,6 @@ app.get("/comics/:characterId", async (req, res) => {
   }
 });
 
-// ✅ Détail d’un comic (via comicId)
 app.get("/comic/:id", async (req, res) => {
   try {
     const comicId = req.params.id;
@@ -111,7 +105,6 @@ app.get("/comic/:id", async (req, res) => {
   }
 });
 
-// ✅ Favoris - POST avec une liste d'IDs de personnages
 app.post("/favorites/characters", async (req, res) => {
   try {
     const ids = req.body.ids;
@@ -134,7 +127,6 @@ app.post("/favorites/characters", async (req, res) => {
   }
 });
 
-// ✅ Favoris - POST avec une liste d'IDs de comics
 app.post("/favorites/comics", async (req, res) => {
   try {
     const ids = req.body.ids;
@@ -157,7 +149,6 @@ app.post("/favorites/comics", async (req, res) => {
   }
 });
 
-// ✅ Écoute du serveur
 app.listen(process.env.PORT, () => {
   console.log("✅ Server started on port " + process.env.PORT);
 });
